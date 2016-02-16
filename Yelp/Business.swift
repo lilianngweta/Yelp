@@ -24,7 +24,7 @@ class Business: NSObject {
         if imageURLString != nil {
             imageURL = NSURL(string: imageURLString!)!
         } else {
-            imageURL = nil
+            imageURL = NSURL(string: "http://rs304.pbsrc.com/albums/nn180/4chanRus/Awesome%20Face/1213841779552.png~c200")!
         }
         
         let location = dictionary["location"] as? NSDictionary

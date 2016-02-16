@@ -8,9 +8,11 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,UISearchBarDelegate {
 
     var businesses: [Business]!
+    
+    var searchBar = UISearchBar()
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -28,11 +30,18 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             
             self.tableView.reloadData()
             
-            for business in businesses {
-                print(business.name!)
-                print(business.address!)
-            }
-        })
+            })
+        
+        
+        searchBar.delegate = self
+        searchBar.sizeToFit()
+        
+        
+        navigationItem.titleView = searchBar
+        
+        
+        
+        
 
 /* Example of Yelp search with more search options specified
         Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
@@ -50,6 +59,29 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    func searchBar (searchBar: UISearchBar, textDidChange searchText: String){
+        
+        if(searchText.isEmpty)
+        {
+        } else {
+            Business.searchWithTerm(searchText, completion: { (businesses: [Business]!, error: NSError!) -> Void in
+                self.businesses = businesses
+                
+                self.tableView.reloadData()
+                
+                for business in businesses {
+                    print(business.name!)
+                    print(business.address!)
+                }
+            })
+        }
+        tableView.reloadData()
+        
+        
+    }
+
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -70,6 +102,8 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         return cell
     }
 
+    
+    
     /*
     // MARK: - Navigation
 
